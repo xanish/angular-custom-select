@@ -1,4 +1,7 @@
-<hello name="{{ name }}"></hello>
-<p>
-  Start editing to see some magic happen :)
-</p>
+<app-ng-select
+  [placeholder]="placeholder"
+  [loading]="loading"
+  [items]="items"
+  [(ngModel)]="test"></app-ng-select>
+
+{{ test | json }}
