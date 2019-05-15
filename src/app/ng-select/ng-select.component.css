@@ -5,19 +5,29 @@
   width: 200px;
 }
 .select-value-container {
+  height: 36px;
   border: 1px solid #DADBDF;
 }
 .select-placeholder,
 .select-element-count,
 .select-element-selected {
-  position: absolute;
   width: 100%;
+  height: 36px;
+  position: relative;
+  top: -35px;
+  left: 0px;
+  padding: 10px 5px 10px;
+  z-index: -1;
+  background-color: #fff;
 }
 .select-search input {
   width: 100%;
   border: none;
   padding: 10px 5px 10px;
   background-color: transparent;
+}
+.select-search input:focus {
+  background-color: #FFF;
 }
 .select-loading {}
 .select-no-items-found {}
@@ -32,5 +42,8 @@
   padding: 5px;
 }
 .select-option:hover {
+  background-color: #DADBDF;
+}
+.select-option.selected {
   background-color: #DADBDF;
 }
