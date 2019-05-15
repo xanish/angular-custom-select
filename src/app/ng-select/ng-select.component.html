@@ -2,7 +2,7 @@
 
   <div class="select-value-container">
 
-    <div class="select-placeholder">{{ placeholder }}</div>
+    <div class="select-placeholder" *ngIf="selected.length === 0">{{ placeholder }}</div>
 
     <div class="select-element-count" *ngIf="multiple && selected.length">{{ selected.length }} Selected</div>
 
@@ -24,12 +24,12 @@
 
   </div>
 
-</div>
-
 <div class="select-dropdown" *ngIf="isOpen">
 
   <ng-container *ngFor="let item of _filtered">
     <div class="select-option" (click)="toggleItem(item)">{{ item.label }}</div>
   </ng-container>
+
+</div>
 
 </div>

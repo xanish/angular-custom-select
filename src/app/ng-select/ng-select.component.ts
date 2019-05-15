@@ -53,7 +53,6 @@ export class NgSelectComponent implements OnChanges, ControlValueAccessor {
   isOpen: boolean = false;
 
   private _items: Array<any> = [];
-  private _selected: Array<any> = [];
   private _filtered: Array<any> = [];
   get filtered() { return this._filterItems(this._items, this.filterValue); };
   get selected() { return this._items.filter(i => i.selected === true); };

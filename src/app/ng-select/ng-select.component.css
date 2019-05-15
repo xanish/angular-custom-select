@@ -1,0 +1,36 @@
+* {
+  box-sizing: border-box;
+}
+.select-container {
+  width: 200px;
+}
+.select-value-container {
+  border: 1px solid #DADBDF;
+}
+.select-placeholder,
+.select-element-count,
+.select-element-selected {
+  position: absolute;
+  width: 100%;
+}
+.select-search input {
+  width: 100%;
+  border: none;
+  padding: 10px 5px 10px;
+  background-color: transparent;
+}
+.select-loading {}
+.select-no-items-found {}
+.select-dropdown {
+  background-color: #FFF;
+  max-height: 250px;
+  transition: max-height 200ms linear;
+  overflow-y: scroll;
+}
+.select-option {
+  cursor: pointer;
+  padding: 5px;
+}
+.select-option:hover {
+  background-color: #DADBDF;
+}
