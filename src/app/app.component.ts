@@ -12,6 +12,7 @@ export class AppComponent  {
     searchable: true,
     multiple: true,
     disable: false,
+    showCheckboxes: true,
     placeholder: 'Select Superhero',
     loading: false,
     loadingText: 'Loading Items...',

@@ -14,7 +14,7 @@
 
         <div class="select-placeholder" *ngIf="selected.length === 0 && items.length > 0">{{ placeholder }}</div>
 
-        <div class="select-element-count" *ngIf="multiple && selected.length">{{ selected.length }} Selected</div>
+        <div class="select-element-count" *ngIf="!isOpen && multiple && selected.length">{{ selected.length }} Selected</div>
 
         <div class="select-element-selected" *ngIf="!multiple && selected.length">{{ selected[0].label }}</div>
 
@@ -29,7 +29,12 @@
   <div class="select-dropdown" *ngIf="isOpen">
 
     <ng-container *ngFor="let item of _filtered">
-      <div class="select-option" [ngClass]="item.selected ? 'selected' : ''" (click)="toggleItem(item)">{{ item.label }}</div>
+      <div class="select-option" [ngClass]="item.selected ? 'selected' : ''" (click)="toggleItem(item)">
+
+        <span class="select-checkbox" *ngIf="showCheckboxes"><input type="checkbox" [checked]="item.selected"></span>
+        <span class="select-label">{{ item.label }}</span>
+
+      </div>
     </ng-container>
 
   </div>

@@ -1,4 +1,5 @@
 * {
+  font-family: Lato, sans-serif;
   box-sizing: border-box;
 }
 .select-container {
@@ -21,7 +22,7 @@
     padding: 12px 15px 12px;
     font-size: 16px;
     z-index: -1;
-    background-color: #fff;
+    background-color: #FFF;
 }
 .select-search {
   height: 42px;
@@ -47,6 +48,8 @@
 .select-option {
   cursor: pointer;
   padding: 10px 15px 10px;
+  display: grid;
+  grid-template-columns: minmax(min-content, max-content) minmax(max-content, 2fr);
 }
 .select-option:hover {
   background-color: #DADBDF;
