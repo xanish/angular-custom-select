@@ -1,9 +1,13 @@
 <app-ng-select
-  [placeholder]="placeholder"
-  [loading]="loading"
-  [items]="items"
-  [multiple]="false"
-  [compareLabelWith]="'name'"
-  [(ngModel)]="test"></app-ng-select>
+  [placeholder]="cso.placeholder"
+  [loading]="cso.loading"
+  [items]="cso.items"
+  [multiple]="cso.multiple"
+  [compareLabelWith]="cso.compareLabelWith"
+  [(ngModel)]="cso.model">
+</app-ng-select>
 
-{{ test | json }}
+
+<p>
+  ngModel: {{ cso.model | json }}
+</p>

@@ -30,7 +30,6 @@ export class NgSelectComponent implements OnChanges, ControlValueAccessor {
   @Input() closeOnSelect: boolean = true;
   @Input() searchable: boolean = true;
   @Input() multiple: boolean = false;
-  @Input() maxSelectableItems: number;
   @Input() placeholder: string;
   @Input() loading: boolean = true;
   @Input() loadingText: string = 'Loading';

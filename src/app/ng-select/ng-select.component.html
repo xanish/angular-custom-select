@@ -3,24 +3,26 @@
   <div class="select-value-container">
 
     <div class="select-search">
+
       <input type="text" #filterInput
         [readOnly]="!searchable"
-        [disabled]="disabled"
+        [disabled]="disabled || loading || items.length === 0"
         [value]="filterValue"
         (input)="handleFilter(filterInput.value)"
         (blur)="handleBlur($event)"
         (focus)="handleFocus($event)">
 
-        <div class="select-placeholder" *ngIf="selected.length === 0">{{ placeholder }}</div>
+        <div class="select-placeholder" *ngIf="selected.length === 0 && items.length > 0">{{ placeholder }}</div>
 
         <div class="select-element-count" *ngIf="multiple && selected.length">{{ selected.length }} Selected</div>
 
         <div class="select-element-selected" *ngIf="!multiple && selected.length">{{ selected[0].label }}</div>
+
+        <div class="select-loading" *ngIf="loading">{{ loadingText }}</div>
+
+        <div class="select-no-items-found" *ngIf="items.length === 0 && !loading">{{ notFoundText }}</div>
+
     </div>
-
-    <div class="select-loading" *ngIf="loading">{{ loadingText }}</div>
-
-    <div class="select-no-items-found" *ngIf="items.length === 0">{{ notFoundText }}</div>
 
   </div>
 
