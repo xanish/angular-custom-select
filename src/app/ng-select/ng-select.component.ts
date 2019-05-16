@@ -1,7 +1,6 @@
 import {
   Component,
   OnChanges,
-  OnDestroy,
   SimpleChanges,
   forwardRef,
   ChangeDetectionStrategy,
@@ -27,6 +26,7 @@ import { NgSelectOption } from '../ng-select-option.model';
 })
 export class NgSelectComponent implements OnChanges, ControlValueAccessor {
 
+  @Input() compareLabelWith: string = 'label';
   @Input() closeOnSelect: boolean = true;
   @Input() searchable: boolean = true;
   @Input() multiple: boolean = false;
@@ -54,7 +54,7 @@ export class NgSelectComponent implements OnChanges, ControlValueAccessor {
 
   private _items: Array<any> = [];
   private _filtered: Array<any> = [];
-  get filtered() { return this._filterItems(this._items, this.filterValue); };
+  get filtered() { return this._filtered; };
   get selected() { return this._items.filter(i => i.selected === true); };
 
   private _onChange = (_: any) => { };
@@ -62,17 +62,47 @@ export class NgSelectComponent implements OnChanges, ControlValueAccessor {
 
   constructor() { }
 
-  ngOnInit() {
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes.items) {
-      this._setItems(changes.items.currentValue || []);
+      this._items = changes.items.currentValue || [];
+      this._filtered = this._filterItems(this._items, this.filterValue);
     }
   }
 
-  writeValue(value: any): void {
-    console.log(value);
+  writeValue(value: Array<any>): void {
+    if (value != null && this._items.length) {
+
+      if (this.multiple && value.length === 0) {
+        return;
+      }
+
+      if (!this.multiple && value.length > 0) {
+        console.warn('Multiple selected values passed to ngModel for single select');
+        return;
+      }
+
+      if (!(value instanceof Array)) {
+        console.warn('ngModel expects an array object');
+        return;
+      }
+
+      this._clearSelectedItems();
+
+      value.forEach(v => {
+
+        const index = this._items.findIndex(i => {
+
+          if (typeof v === "object") {
+            return i.label === v[this.compareLabelWith];
+          } else {
+            return i.label === v;
+          }
+        });
+
+        this._items[index].selected = true;
+
+      });
+    }
   }
 
   registerOnChange(fn: any): void {
@@ -89,57 +119,88 @@ export class NgSelectComponent implements OnChanges, ControlValueAccessor {
   }
 
   handleBlur(event) {
-    // this.isOpen = false;
-    // console.log('blur');
+    if (!this.isOpen) {
+      this._onTouched();
+    }
   }
 
   handleFocus(event) {
-    this.isOpen = true;
+    this.open();
   }
 
   toggleItem(item: NgSelectOption) {
     if (this.multiple && item.selected) {
+
       item.selected = false;
       this.deselectEvent.emit(item);
+
     } else {
+
       if (!this.multiple) {
         this._items.forEach(i => i.selected = false)
       } else {
         this.selectEvent.emit(item);
       }
+
       item.selected = true;
+
     }
 
     if (this.closeOnSelect && !this.multiple) {
-      this.isOpen = false;
+      this.close();
     }
 
     this._updateNgModel();
   }
 
-  private _setItems(items: any[]) {
-    this._filtered = this._filterItems(items, this.filterValue);
+  open() {
+    this.isOpen = true;
+    this.openEvent.emit();
+  }
+
+  close() {
+    if (!this.isOpen) {
+      return;
+    }
+    this.isOpen = false;
+    this.filterValue = '';
+    this._clearFilteredItems();
+    this.closeEvent.emit();
   }
 
   private _filterItems(items, filterValue) {
     return items.filter(i => i.label.toUpperCase().includes(filterValue.toUpperCase()));
   }
 
+  private _clearSelectedItems() {
+    this._items.forEach(i => i.selected = false);
+  }
+
+  private _clearFilteredItems() {
+    this._filtered = [...this._items];
+  }
+
   private _updateNgModel() {
     const model = [];
     for (const item of this._items) {
+
       if (item.selected) {
         model.push(item.value);
       }
+
     }
 
     const selected = this._items.map(i => i.value);
     if (this.multiple) {
+
       this._onChange(model);
       this.changeEvent.emit(selected);
+
     } else {
+
       this._onChange(model[0] != null ? model[0] : null);
       this.changeEvent.emit(selected[0]);
+
     }
   }
 

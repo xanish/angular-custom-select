@@ -2,7 +2,8 @@
   [placeholder]="placeholder"
   [loading]="loading"
   [items]="items"
-  [multiple]="true"
+  [multiple]="false"
+  [compareLabelWith]="'name'"
   [(ngModel)]="test"></app-ng-select>
 
 {{ test | json }}

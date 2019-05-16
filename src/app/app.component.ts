@@ -20,5 +20,5 @@ export class AppComponent  {
     {value: {id: 3, name: 'Thor'}, label: 'Thor'},
     {value: {id: 4, name: 'Captain America'}, label: 'Captain America'},
   ];
-  test: [];
+  test = [{name: 'Spiderman'}, {id: 2, name: 'Iron Man'}];
 }

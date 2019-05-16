@@ -1,4 +1,4 @@
-<div class="select-container">
+<div class="select-container" appClickOutside (clickOutside)="close()">
 
   <div class="select-value-container">
 
@@ -24,12 +24,12 @@
 
   </div>
 
-<div class="select-dropdown" *ngIf="isOpen">
+  <div class="select-dropdown" *ngIf="isOpen">
 
-  <ng-container *ngFor="let item of _filtered">
-    <div class="select-option" [ngClass]="item.selected ? 'selected' : ''" (click)="toggleItem(item)">{{ item.label }}</div>
-  </ng-container>
+    <ng-container *ngFor="let item of _filtered">
+      <div class="select-option" [ngClass]="item.selected ? 'selected' : ''" (click)="toggleItem(item)">{{ item.label }}</div>
+    </ng-container>
 
-</div>
+  </div>
 
 </div>
