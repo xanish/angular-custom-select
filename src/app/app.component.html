@@ -4,7 +4,11 @@
   [items]="cso.items"
   [multiple]="cso.multiple"
   [compareLabelWith]="cso.compareLabelWith"
-  [(ngModel)]="cso.model">
+  [disable]="cso.disable"
+  [(ngModel)]="cso.model"
+  (change)="handleChangeEvent($event)"
+  (close)="handleCloseEvent($event)"
+  (select)="handleSelectEvent($event)">
 </app-ng-select>
 
 

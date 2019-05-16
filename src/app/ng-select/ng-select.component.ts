@@ -4,11 +4,13 @@ import {
   SimpleChanges,
   forwardRef,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   EventEmitter,
   Input,
   Output,
   ViewChild,
   ElementRef,
+  HostListener,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgSelectOption } from '../ng-select-option.model';
@@ -30,6 +32,7 @@ export class NgSelectComponent implements OnChanges, ControlValueAccessor {
   @Input() closeOnSelect: boolean = true;
   @Input() searchable: boolean = true;
   @Input() multiple: boolean = false;
+  @Input() disable: boolean = false;
   @Input() placeholder: string;
   @Input() loading: boolean = true;
   @Input() loadingText: string = 'Loading';
@@ -39,11 +42,11 @@ export class NgSelectComponent implements OnChanges, ControlValueAccessor {
   get items() { return this._items; };
   set items(__items: Array<NgSelectOption>) { this._items = __items; };
 
-  @Output() openEvent = new EventEmitter();
-  @Output() selectEvent = new EventEmitter();
-  @Output() deselectEvent = new EventEmitter();
-  @Output() changeEvent = new EventEmitter();
-  @Output() closeEvent = new EventEmitter();
+  @Output('open') openEvent = new EventEmitter();
+  @Output('select') selectEvent = new EventEmitter();
+  @Output('deselect') deselectEvent = new EventEmitter();
+  @Output('change') changeEvent = new EventEmitter();
+  @Output('close') closeEvent = new EventEmitter();
 
   @ViewChild('filterInput') filterInput: ElementRef;
 
@@ -51,6 +54,7 @@ export class NgSelectComponent implements OnChanges, ControlValueAccessor {
   filterValue: string = '';
   isOpen: boolean = false;
 
+  private _focused: boolean = false;
   private _items: Array<any> = [];
   private _filtered: Array<any> = [];
   get filtered() { return this._filtered; };
@@ -59,12 +63,21 @@ export class NgSelectComponent implements OnChanges, ControlValueAccessor {
   private _onChange = (_: any) => { };
   private _onTouched = () => { };
 
-  constructor() { }
+  constructor(private _cd: ChangeDetectorRef) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.items) {
       this._items = changes.items.currentValue || [];
       this._filtered = this._filterItems(this._items, this.filterValue);
+    }
+  }
+
+  @HostListener('keydown', ['$event'])
+  handleKeyDown($event: KeyboardEvent) {
+    // TAB key is pressed
+    if ($event.which === 9) {
+      this._focused = false;
+      this.close();
     }
   }
 
@@ -101,6 +114,8 @@ export class NgSelectComponent implements OnChanges, ControlValueAccessor {
         this._items[index].selected = true;
 
       });
+      this._cd.markForCheck();
+
     }
   }
 
@@ -121,10 +136,15 @@ export class NgSelectComponent implements OnChanges, ControlValueAccessor {
     if (!this.isOpen) {
       this._onTouched();
     }
+    this._focused = false;
   }
 
   handleFocus(event) {
+    if (this._focused) {
+      return;
+    }
     this.open();
+    this._focused = true;
   }
 
   toggleItem(item: NgSelectOption) {
@@ -158,7 +178,7 @@ export class NgSelectComponent implements OnChanges, ControlValueAccessor {
   }
 
   close() {
-    if (!this.isOpen) {
+    if (!this.isOpen || this._focused) {
       return;
     }
     this.isOpen = false;

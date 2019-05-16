@@ -11,6 +11,7 @@ export class AppComponent  {
     closeOnSelect: true,
     searchable: true,
     multiple: true,
+    disable: false,
     placeholder: 'Select Superhero',
     loading: false,
     loadingText: 'Loading Items...',
@@ -22,8 +23,22 @@ export class AppComponent  {
       {value: {id: 4, name: 'Captain America'}, label: 'Captain America'},
     ],
     model: [
-      {name: 'Spiderman'}, {name: 'Thor'}
+      {id: 1, name: 'Spiderman'},
+      {id: 3, name: 'Thor'},
     ]
   };
+
+  handleChangeEvent($event) {
+    console.log('Change Event Triggered');
+    console.log($event);
+  }
   
+  handleCloseEvent($event) {
+    console.log('Close Event Triggered');
+  }
+
+  handleSelectEvent($event) {
+    console.log('Select Event Triggered');
+    console.log($event);
+  }
 }

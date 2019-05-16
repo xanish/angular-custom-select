@@ -6,7 +6,7 @@
 
       <input type="text" #filterInput
         [readOnly]="!searchable"
-        [disabled]="disabled || loading || items.length === 0"
+        [disabled]="disable || loading || items.length === 0"
         [value]="filterValue"
         (input)="handleFilter(filterInput.value)"
         (blur)="handleBlur($event)"
